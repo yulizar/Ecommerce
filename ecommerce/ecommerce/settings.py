@@ -11,16 +11,18 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Hide Secret keys
+SECRET_KEY = config("SECRET_KEY")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rc)6pacp2#u+^$5xr)x^em#7!iad!-ow!wk5*$0tkh8l-xhiq%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
