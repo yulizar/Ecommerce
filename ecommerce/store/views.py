@@ -100,3 +100,15 @@ def processOrder(request):
         )
     return JsonResponse('Payment complete', safe=False)
 
+def detailItem(request):
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    products = Product.objects.all()
+    context = {
+        'products': products,
+        'cartItems': cartItems
+    }
+
+    return render(request,'store/detail.html', context)
+
