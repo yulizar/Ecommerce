@@ -1,6 +1,6 @@
 import json
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import *
 from  django.http import JsonResponse
 from .utils import cookieCart
@@ -100,15 +100,17 @@ def processOrder(request):
         )
     return JsonResponse('Payment complete', safe=False)
 
-def detailItem(request):
+
+def product_detail(request, product_id):
     data = cartData(request)
     cartItems = data['cartItems']
-
     products = Product.objects.all()
+    product = Product.objects.get(id=product_id)
+
     context = {
-        'products': products,
-        'cartItems': cartItems
+        "data" : data,
+        "product" : product,
+        "cartItems" : cartItems
     }
 
-    return render(request,'store/detail.html', context)
-
+    return render(request,'store/product_detail.html', context)
