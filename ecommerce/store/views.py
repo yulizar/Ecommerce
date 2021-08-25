@@ -1,6 +1,10 @@
 import json
 
-from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth import logout
+from django.shortcuts import render, get_object_or_404, redirect
+
+from .forms import RegistrationForm
 from .models import *
 from  django.http import JsonResponse
 from .utils import cookieCart
@@ -114,3 +118,27 @@ def product_detail(request, product_id):
     }
 
     return render(request,'store/product_detail.html', context)
+
+def register(request):
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request,f'Akun baru berhasil dibuat dengan username {username}')
+            password = form.cleaned_data.get('password1')
+            return redirect("/")
+
+        else:
+            for msg in form.error_messages:
+                print(form.error_messages[msg])
+
+            return render(request, 'registration/register.html', context={'form':form})
+
+    form = RegistrationForm
+    return render(request, 'registration/register.html', context={'form': form})
+
+
+def logout_request(request):
+    logout(request)
+    return redirect("/")
